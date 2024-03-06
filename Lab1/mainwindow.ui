@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>801</width>
     <height>600</height>
    </rect>
   </property>
@@ -69,6 +69,15 @@
      </item>
      <item>
       <widget class="QSlider" name="contrastSlider">
+       <property name="minimum">
+        <number>-100</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>0</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -93,13 +102,66 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="hist_label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>390</y>
+      <width>261</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>380</y>
+      <width>160</width>
+      <height>108</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QPushButton" name="hist_r_button">
+       <property name="text">
+        <string>Red</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="hist_g_button">
+       <property name="text">
+        <string>Green</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="hist_b_button">
+       <property name="text">
+        <string>Blue</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="hist_l_button">
+       <property name="text">
+        <string>Luma</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>801</width>
      <height>19</height>
     </rect>
    </property>

@@ -27,5 +27,11 @@ public slots:
     void changeBrightness(int);
     void changeContrast(int);
     void changeGamma(int);
+
+    void showHistR();
+    void showHistG();
+    void showHistB();
+    void showHistL();
+    void showHistogram(int);
 };
 #endif // MAINWINDOW_H
