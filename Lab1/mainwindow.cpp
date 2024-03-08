@@ -11,11 +11,21 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    brightness = 0;
+    contrast = 0;
+    gamma = 100;
 
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openImage()));
-    connect(ui->brightnessSlider, SIGNAL(valueChanged(int)), this, SLOT(changeBrightness(int)));
-    connect(ui->contrastSlider, SIGNAL(valueChanged(int)), this, SLOT(changeContrast(int)));
-    connect(ui->brightnessSlider, SIGNAL(valueChanged(int)), this, SLOT(changeGamma(int)));
+
+    connect(ui->brightnessSlider, SIGNAL(valueChanged(int)), this, SLOT(setBrightness(int)));
+    connect(ui->contrastSlider, SIGNAL(valueChanged(int)), this, SLOT(setContrast(int)));
+    connect(ui->gammaSlider, SIGNAL(valueChanged(int)), this, SLOT(setGamma(int)));
+
+    connect(ui->brightnessSlider, SIGNAL(sliderReleased()), this, SLOT(transformImage()));
+    connect(ui->contrastSlider, SIGNAL(sliderReleased()), this, SLOT(transformImage()));
+    connect(ui->gammaSlider, SIGNAL(sliderReleased()), this, SLOT(transformImage()));
+
+    connect(ui->reset_button, SIGNAL(clicked()), this, SLOT(resetTransform()));
 
     connect(ui->hist_r_button, SIGNAL(clicked()), this, SLOT(showHistR()));
     connect(ui->hist_g_button, SIGNAL(clicked()), this, SLOT(showHistG()));
@@ -37,25 +47,44 @@ void MainWindow::openImage()
         trans_img = ref_img;
         ui->label->setPixmap(QPixmap::fromImage(trans_img));
     }
+
+    transformImage();
 }
 
-void MainWindow::changeBrightness(int value)
+void MainWindow::setBrightness(int value)
 {
-    brightness(&ref_img, &trans_img, value);
+    this->brightness = value;
+}
+
+void MainWindow::setContrast(int value)
+{
+    this->contrast = value;
+}
+
+void MainWindow::setGamma(int value)
+{
+    this->gamma = value;
+}
+
+void MainWindow::transformImage()
+{
+    changeBrightness(&ref_img, &trans_img, this->brightness);
+    changeContrast(&trans_img, &trans_img, this->contrast);
+    changeGamma(&trans_img, &trans_img, this->gamma);
     ui->label->setPixmap(QPixmap::fromImage(trans_img));
 }
 
-void MainWindow::changeContrast(int value)
+void MainWindow::resetTransform()
 {
-    contrast(&ref_img, &trans_img, value);
-    ui->label->setPixmap(QPixmap::fromImage(trans_img));
-}
+    brightness = 0;
+    contrast = 0;
+    gamma = 100;
 
-void MainWindow::changeGamma(int value)
-{
-    float fv = value/50.0f;
-    gamma(&ref_img, &trans_img, fv);
-    ui->label->setPixmap(QPixmap::fromImage(trans_img));
+    ui->brightnessSlider->setValue(this->brightness);
+    ui->contrastSlider->setValue(this->contrast);
+    ui->gammaSlider->setValue(this->gamma);
+
+    transformImage();
 }
 
 void MainWindow::showHistR()
@@ -100,7 +129,7 @@ void MainWindow::showHistogram(int color) {
     }
 
     int hist_arr[256] = {0};
-    hist(&ref_img, hist_arr, color);
+    hist(&trans_img, hist_arr, color);
 
     int max_hist_value = 0;
 

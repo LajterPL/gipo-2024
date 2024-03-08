@@ -1,6 +1,7 @@
 #include "imageprocessing.h"
+#include <stdio.h>
 
-void brightness(const QImage *src, QImage* dst, int value)
+void changeBrightness(const QImage *src, QImage* dst, int value)
 {
 
     for (int y = 0; y < src->height(); y++) {
@@ -34,10 +35,8 @@ void brightness(const QImage *src, QImage* dst, int value)
 
 }
 
-void contrast(const QImage *src, QImage *dst, int value)
+void changeContrast(const QImage *src, QImage *dst, int value)
 {
-
-    value = value / 50.0f;
 
     for (int y = 0; y < src->height(); y++) {
         QRgb* rgb_src = (QRgb*)src->scanLine(y);
@@ -51,17 +50,17 @@ void contrast(const QImage *src, QImage *dst, int value)
             int g = qGreen(rgb);
             int b = qBlue(rgb);
 
-            float gray = 255 / 2.0f;
+            float gray = 127.0f;
 
             if (value > 0) {
-                r = std::clamp((int)((gray/gray - value) * (r - value)), 0, 255);
-                g = std::clamp((int)((gray/gray - value) * (g - value)), 0, 255);
-                b = std::clamp((int)((gray/gray - value) * (b - value)), 0, 255);
+                r = std::clamp((int)(gray/(gray - value) * (r - value)), 0, 255);
+                g = std::clamp((int)(gray/(gray - value) * (g - value)), 0, 255);
+                b = std::clamp((int)(gray/(gray - value) * (b - value)), 0, 255);
 
             } else if (value < 0) {
-                r = std::clamp((int)(((gray + value/gray) * r) - value), 0, 255);
-                g = std::clamp((int)(((gray + value/gray) * g) - value), 0, 255);
-                b = std::clamp((int)(((gray + value/gray) * b) - value), 0, 255);
+                r = std::clamp((int)((gray + value)/gray * r - value), 0, 255);
+                g = std::clamp((int)((gray + value)/gray * g - value), 0, 255);
+                b = std::clamp((int)((gray + value)/gray * b - value), 0, 255);
             }
 
             rgb = qRgb(r, g, b);
@@ -71,9 +70,32 @@ void contrast(const QImage *src, QImage *dst, int value)
     }
 }
 
-void gamma(const QImage *src, QImage *dst, float value)
+void changeGamma(const QImage *src, QImage *dst, int value)
 {
-// normalizacja rgb na wartości <0, 1>
+
+    float fv = value / 100.0f;
+
+    for (int y = 0; y < src->height(); y++) {
+        QRgb* rgb_src = (QRgb*)src->scanLine(y);
+        QRgb* rgb_dst = (QRgb*)dst->scanLine(y);
+
+        for (int x = 0; x < src->width(); x++) {
+
+            QRgb rgb = rgb_src[x];
+
+            float r = qRed(rgb) / 255.0f;
+            float g = qGreen(rgb) / 255.0f;
+            float b = qBlue(rgb) / 255.0f;
+
+            r = std::clamp((int) (std::pow(r, fv) * 255.0f), 0, 255);
+            g = std::clamp((int) (std::pow(g, fv) * 255.0f), 0, 255);
+            b = std::clamp((int) (std::pow(b, fv) * 255.0f), 0, 255);
+
+            rgb = qRgb((int) r, (int) g, (int) b);
+
+            rgb_dst[x] = rgb;
+        }
+    }
 }
 
 void hist(const QImage *src, int* hist, int color)

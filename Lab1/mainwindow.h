@@ -20,13 +20,19 @@ private:
     Ui::MainWindow *ui;
     QImage ref_img;
     QImage trans_img;
+    int brightness;
+    int contrast;
+    int gamma;
 
 
 public slots:
     void openImage();
-    void changeBrightness(int);
-    void changeContrast(int);
-    void changeGamma(int);
+
+    void setBrightness(int);
+    void setContrast(int);
+    void setGamma(int);
+    void transformImage();
+    void resetTransform();
 
     void showHistR();
     void showHistG();

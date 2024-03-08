@@ -3,11 +3,11 @@
 
 #include <QImage>
 
-void brightness(const QImage* src, QImage* dst, int value);
+void changeBrightness(const QImage* src, QImage* dst, int value);
 
-void contrast(const QImage* src, QImage* dst, int value);
+void changeContrast(const QImage* src, QImage* dst, int value);
 
-void gamma(const QImage* src, QImage* dst, float value);
+void changeGamma(const QImage* src, QImage* dst, int value);
 
 void hist(const QImage* src, int* hist, int color);
 
