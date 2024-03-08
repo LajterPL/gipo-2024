@@ -10,6 +10,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    hue = 0;
+    saturation = 0;
+    lumination = 0;
+
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openImage()));
 
     connect(ui->hue_slider, SIGNAL(valueChanged(int)), this, SLOT(setHue(int)));

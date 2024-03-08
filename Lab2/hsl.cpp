@@ -62,7 +62,7 @@ QRgb HSL::toRgb()
 {
     // Jeśli nasycenie = 0, to znaczenie ma tylko luminacja
     if (this->saturation == 0) {
-        int color = std::clamp(this->lumination * 255, 0, 255);
+        int color = std::clamp((int) (this->lumination * 255.0f), 0, 255);
 
         return qRgb(color, color, color);
     }

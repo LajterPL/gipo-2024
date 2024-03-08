@@ -23,8 +23,6 @@ void changeHSL(const QImage *src, QImage *dst, int h, int s, int l)
 
             HSL hsl_color = HSL::fromRgb(r, g, b);
 
-            printf("Test");
-
             hsl_color.hue = hsl_color.hue + h % 360;
             hsl_color.saturation = std::clamp(hsl_color.saturation + fs, 0.0f, 1.0f);
             hsl_color.lumination = std::clamp(hsl_color.lumination + fl, 0.0f, 1.0f);

@@ -7,8 +7,8 @@ class HSL
 {
 public:
     int hue;
-    int saturation;
-    int lumination;
+    float saturation;
+    float lumination;
 
     HSL(int h, float s, float l);
     static HSL fromRgb(int r, int g, int b);
