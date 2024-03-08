@@ -1,5 +1,4 @@
 #include "imageprocessing.h"
-#include <stdio.h>
 
 void changeBrightness(const QImage *src, QImage* dst, int value)
 {
