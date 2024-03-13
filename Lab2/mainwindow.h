@@ -42,6 +42,8 @@ public slots:
     void setL(int);
     void setA(int);
     void setB(int);
+    void transformLAB();
 
+    void resetImage();
 };
 #endif // MAINWINDOW_H

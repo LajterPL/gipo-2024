@@ -1,6 +1,8 @@
 #include "xyz.h"
 
-XYZ::XYZ() {}
+#include <algorithm>
+
+float XYZ::white[3] = {0.9505, 1.0000, 1.0891};
 
 XYZ::XYZ(float x, float y, float z)
 {
@@ -12,23 +14,23 @@ XYZ::XYZ(float x, float y, float z)
 XYZ XYZ::fromRgb(int r, int g, int b)
 {
     // Macierz kolorów RGB
-    float c[3];
-    // Macierz dla przestrzeni Adobe RGB
-    float M[3][3] = {0.57667, 0.29734, 0.02703, 0.18556, 0.62736, 0.07069, 0.18823, 0.07529, 0.99134};
+    float rgb[3] = {(float) r / 255.0f, (float) g / 255.0f, (float) b / 255.0f};
+
+    // Macierz dla przestrzeni sRGB
+    float M[3][3] = {0.4124564,  0.3575761,  0.1804375,
+                     0.2126729,  0.7151522,  0.0721750,
+                     0.0193339,  0.1191920,  0.9503041};
+
     // Macierz kolorów XYZ
     float xyz[3] = {0};
 
-    // Normalizacja kolorów
-    c[0] = r / 255.0f;
-    c[1] = g / 255.0f;
-    c[2] = b / 255.0f;
 
     for (int i = 0; i < 3; i++) {
-        c[i] = std::pow(c[i], 2.2f);
+        rgb[i] = std::pow(rgb[i], 2.2);
+    }
 
-        for (int j = 0; i < 3; j++) {
-            xyz[i] += c[j] * M[j][i];
-        }
+    for (int i = 0; i < 3; i++) {
+        xyz[i] = M[i][0] * rgb[0] + M[i][1] * rgb[1] + M[i][2] * rgb[2];
     }
 
     return XYZ(xyz[0], xyz[1], xyz[2]);
@@ -38,19 +40,24 @@ QRgb XYZ::toRgb()
 {
     // Macierz kolorów XYZ
     float xyz[3] = {this->x, this->y, this->z};
-    // Macierz dla przestrzeni Adobe RGB
-    float M[3][3] = {2.04159, -0.96924, 0.01344, -0.56501, 1.87597, -0.11836, -0.34473, 0.04156, 1.01517};
+
+    // Macierz dla przestrzeni sRGB
+    float M[3][3] = {3.2404542, -1.5371385, -0.4985314,
+                     -0.9692660,  1.8760108,  0.0415560,
+                     0.0556434, -0.2040259,  1.0572252};
+
     // Macierz kolorów RGB
-    float c[3] = {0};
+    float rgb[3] = {0};
+
 
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            c[i] += xyz[j] * M[j][i];
-        }
+        rgb[i] = M[i][0] * xyz[0] + M[i][1] * xyz[1] + M[i][2] * xyz[2];
 
-        c[i] = std::clamp(c[i] * 255.0f, 0.0f, 255.0f);
+        rgb[i] = std::pow(rgb[i], 1.0f / 2.2f);
+
+        rgb[i] = std::clamp(std::round(rgb[i] * 255.0f), 0.0f, 255.0f);
     }
 
-    return qRgb((int) c[0], (int) c[1], (int) c[2]);
+    return qRgb((int) rgb[0], (int) rgb[1], (int) rgb[2]);
 
 }

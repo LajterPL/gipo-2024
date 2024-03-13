@@ -59,7 +59,7 @@
             </font>
            </property>
            <property name="text">
-            <string>HSV</string>
+            <string>HSL</string>
            </property>
           </widget>
          </item>
@@ -108,7 +108,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSlider" name="value_slider">
+          <widget class="QSlider" name="lumination_slider">
            <property name="minimum">
             <number>-100</number>
            </property>
@@ -158,6 +158,12 @@
          </item>
          <item>
           <widget class="QSlider" name="l_slider">
+           <property name="minimum">
+            <number>-100</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -172,6 +178,12 @@
          </item>
          <item>
           <widget class="QSlider" name="a_slider">
+           <property name="minimum">
+            <number>-256</number>
+           </property>
+           <property name="maximum">
+            <number>256</number>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -186,6 +198,12 @@
          </item>
          <item>
           <widget class="QSlider" name="b_slider">
+           <property name="minimum">
+            <number>-256</number>
+           </property>
+           <property name="maximum">
+            <number>256</number>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -224,7 +242,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

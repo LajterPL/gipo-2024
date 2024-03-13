@@ -1,5 +1,6 @@
 #include "hsl.h"
 #include <algorithm>
+#include <cmath>
 
 HSL::HSL(int h, float s, float l)
 {
@@ -32,10 +33,10 @@ HSL HSL::fromRgb(int r, int g, int b)
 
     if (l == 0 || max == min) {
         s = 0;
-    } else if (l > 0.5) {
-        s = dm / (2 - 2 * l);
+    } else if (l > 0.5f) {
+        s = dm / (2.0f - (2.0f * l));
     } else {
-        s = dm / (2 * l);
+        s = dm / (2.0f * l);
     }
 
     // Barwa
@@ -62,7 +63,7 @@ QRgb HSL::toRgb()
 {
     // Jeśli nasycenie = 0, to znaczenie ma tylko luminacja
     if (this->saturation == 0) {
-        int color = std::clamp((int) (this->lumination * 255.0f), 0, 255);
+        int color = std::clamp((int) std::round(this->lumination * 255.0f), 0, 255);
 
         return qRgb(color, color, color);
     }
