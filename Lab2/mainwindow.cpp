@@ -3,7 +3,6 @@
 #include "imageprocessing.h"
 #include "xyz.h"
 #include "lab.h"
-#include <iostream>
 
 #include <QFileDialog>
 
@@ -20,12 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
     l = 0;
     a = 0;
     b = 0;
-
-    LAB test = LAB::fromRgb(128, 128, 128);
-    std::printf("%f %f %f\n", test.l, test.a, test.b);
-    QRgb test2 = test.toRgb();
-    std::printf("%d %d %d\n", qRed(test2), qGreen(test2), qBlue(test2));
-
 
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openImage()));
 

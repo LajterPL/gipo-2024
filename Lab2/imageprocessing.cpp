@@ -48,11 +48,11 @@ void changeLAB(const QImage *src, QImage *dst, int l, int a, int b)
 
             int r = qRed(rgb);
             int g = qGreen(rgb);
-            int b = qBlue(rgb);
+            int blue = qBlue(rgb);
 
-            LAB lab_color = LAB::fromRgb(r, g, b);
+            LAB lab_color = LAB::fromRgb(r, g, blue);
 
-            lab_color.l = std::clamp(lab_color.l + (float) l, -100.0f, 100.0f);
+            lab_color.l = std::clamp(lab_color.l + (float) l, 0.0f, 100.0f);
             lab_color.a = std::clamp(lab_color.a + (float) a, -128.0f, 127.0f);
             lab_color.b = std::clamp(lab_color.b + (float) b, -128.0f, 127.0f);
 

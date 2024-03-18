@@ -16,15 +16,13 @@ LAB LAB::fromRgb(int r, int g, int blue)
 {
     XYZ xyz = XYZ::fromRgb(r, g, blue);
 
-    float xyz_arr[3] = {xyz.x, xyz.y, xyz.z};
+    float xyz_arr[3] = {xyz.x / XYZ::white[0], xyz.y / XYZ::white[1], xyz.z / XYZ::white[2]};
 
     for (int i = 0; i < 3; i++) {
-        xyz_arr[i] = xyz_arr[i] / XYZ::white[i];
-
         if (xyz_arr[i] > LAB::ep) {
-            xyz_arr[i] = std::pow(xyz_arr[i], 1.0f / 3.0f );
+            xyz_arr[i] = std::pow(xyz_arr[i], 1.0f / 3.0f);
         } else {
-            xyz_arr[i] = ((xyz_arr[i] * LAB::k) + 16.0f) / 116.0f;
+            xyz_arr[i] = (LAB::k * xyz_arr[i] + 16.0f) / 116.0f;
         }
     }
 
