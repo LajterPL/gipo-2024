@@ -17,12 +17,29 @@ MainWindow::MainWindow(QWidget *parent)
     medianRadius = 1;
 
     filter = new int*[3];
+
+    for (int i = 0; i < 3; i++) {
+        filter[i] = new int[3];
+
+        for (int j = 0; j < 3; j++) {
+            if (i == 1 && j == 1) {
+                filter[i][j] = 1;
+            } else {
+                filter[i][j] = 0;
+            }
+        }
+    }
+
     filterRadius = 1;
 
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openImage()));
-    connect(ui->median_radius_box, SIGNAL(valueChanged(int)), this, SLOT(setMedianRadius(int)));
-    connect(ui->conv_settings_button, SIGNAL(pressed()), this, SLOT(showConvOptions()));
+    connect(ui->reset_button, SIGNAL(pressed()), this, SLOT(resetImage()));
 
+    connect(ui->median_radius_box, SIGNAL(valueChanged(int)), this, SLOT(setMedianRadius(int)));
+    connect(ui->median_button, SIGNAL(pressed()), this, SLOT(applyMedianFilter()));
+
+    connect(ui->conv_settings_button, SIGNAL(pressed()), this, SLOT(showConvOptions()));
+    connect(ui->conv_button, SIGNAL(pressed()), this, SLOT(applyConv()));
     conv_popup->connect(conv_popup->ui->save_button, SIGNAL(pressed()), this, SLOT(saveConvOptions()));
 }
 
@@ -61,11 +78,17 @@ void MainWindow::saveConvOptions()
         filter[row] = new int[2*filterRadius + 1];
 
         for (int col = 0; col < 2*filterRadius + 1; col++) {
-            filter[row][col] = conv_popup->ui->filter_values->itemAt(col, row)->text().toInt();
+            filter[row][col] = conv_popup->ui->filter_values->item(col, row)->text().toInt();
         }
     }
 
     conv_popup->hide();
+}
+
+void MainWindow::applyConv()
+{
+    customConv(&ref_img, &trans_img, filter, filterRadius);
+    ui->img_label->setPixmap(QPixmap::fromImage(trans_img));
 }
 
 void MainWindow::applyMedianFilter()

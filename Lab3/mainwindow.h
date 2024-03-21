@@ -40,6 +40,7 @@ public slots:
 
     void showConvOptions();
     void saveConvOptions();
+    void applyConv();
 
     void applyMedianFilter();
     void setMedianRadius(int newMedianRadius);
