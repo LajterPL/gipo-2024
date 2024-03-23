@@ -18,29 +18,29 @@ void medianFilter(const QImage *src, QImage *dst, int r)
 
         int colorArr[3][256] = {0};
 
+        for (int i = 0; i < 2*r + 1; i++) {
+            for (int j = 0; j < 2*r + 1; j++) {
+
+                int x_index = 0;
+
+                if (j - r >= src->width()) {
+                    x_index = src->width() - 1;
+                } else if (j - r > 0) {
+                    x_index = j - r;
+                }
+
+                QRgb rgb = filterLines[i][x_index];
+
+                colorArr[0][qRed(rgb)]++;
+                colorArr[1][qGreen(rgb)]++;
+                colorArr[2][qBlue(rgb)]++;
+
+            }
+        }
+
         QRgb* rgb_dst = (QRgb*)dst->scanLine(y);
 
         for (int x = 0; x < src->width(); x++) {
-
-            for (int i = 0; i < 2*r + 1; i++) {
-                for (int j = 0; j < 2*r + 1; j++) {
-
-                    int x_index = 0;
-
-                    if ((x - r) + j >= src->width()) {
-                        x_index = src->width() - 1;
-                    } else if ((x - r) + j > 0) {
-                        x_index = (x - r) + j;
-                    }
-
-                    QRgb rgb = filterLines[i][x_index];
-
-                    colorArr[0][qRed(rgb)]++;
-                    colorArr[1][qGreen(rgb)]++;
-                    colorArr[2][qBlue(rgb)]++;
-
-                }
-            }
 
             int colors[3] = {0};
 
@@ -63,6 +63,8 @@ void medianFilter(const QImage *src, QImage *dst, int r)
 
             for (int i = 0; i < 2*r + 1; i++) {
 
+
+               // Usunięcie wartości z lewej strony filtra
                 int x_index = 0;
 
                 if (x - r >= src->width()) {
@@ -76,6 +78,21 @@ void medianFilter(const QImage *src, QImage *dst, int r)
                 colorArr[0][qRed(rgb)]--;
                 colorArr[1][qGreen(rgb)]--;
                 colorArr[2][qBlue(rgb)]--;
+
+                // Dodanie wartości z prawej strony filtra
+                x_index = 0;
+
+                if (x + r >= src->width()) {
+                    x_index = src->width() - 1;
+                } else if (x + r > 0) {
+                    x_index = x + r;
+                }
+
+                rgb = filterLines[i][x_index];
+
+                colorArr[0][qRed(rgb)]++;
+                colorArr[1][qGreen(rgb)]++;
+                colorArr[2][qBlue(rgb)]++;
 
             }
 
