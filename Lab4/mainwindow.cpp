@@ -12,12 +12,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     moveX = 0;
     moveY = 0;
+    rotation = 0;
 
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openImage()));
     connect(ui->reset_button, SIGNAL(pressed()), this, SLOT(resetImage()));
 
     connect(ui->x_move_box, SIGNAL(valueChanged(int)), this, SLOT(moveImage()));
     connect(ui->y_move_box, SIGNAL(valueChanged(int)), this, SLOT(moveImage()));
+
+    connect(ui->rotation_slider, SIGNAL(sliderReleased()), this, SLOT(rotateImage()));
 }
 
 MainWindow::~MainWindow()
@@ -50,6 +53,14 @@ void MainWindow::moveImage()
 
 }
 
+void MainWindow::rotateImage()
+{
+    this->setRotation(ui->rotation_slider->value());
+
+    IMAGEPROCESSING_H::rotateImage(&ref_img, &trans_img, (float) rotation);
+    ui->img_label->setPixmap(QPixmap::fromImage(trans_img));
+}
+
 // Setters
 
 void MainWindow::setMoveX(int newMoveX)
@@ -60,4 +71,9 @@ void MainWindow::setMoveX(int newMoveX)
 void MainWindow::setMoveY(int newMoveY)
 {
     moveY = newMoveY;
+}
+
+void MainWindow::setRotation(int newRotation)
+{
+    rotation = newRotation;
 }

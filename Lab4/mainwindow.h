@@ -19,6 +19,8 @@ public:
 
     void setMoveY(int newMoveY);
 
+    void setRotation(int newRotation);
+
 private:
     Ui::MainWindow *ui;
 
@@ -28,10 +30,13 @@ private:
     int moveX;
     int moveY;
 
+    int rotation;
+
 public slots:
     void openImage();
     void resetImage();
 
     void moveImage();
+    void rotateImage();
 };
 #endif // MAINWINDOW_H
