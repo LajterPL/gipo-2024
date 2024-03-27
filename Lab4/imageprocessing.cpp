@@ -55,8 +55,14 @@ void rotateImage(const QImage *src, QImage *dst, float a)
 
         for (int y = 0; y < 2; y++) {
             for (int x = 0; x < 2; x++) {
-                int newX = std::abs(rotX(testX[x], testY[y], cosA, sinA));
-                int newY = std::abs(rotY(testX[x], testY[y], cosA, sinA));
+                int newX = rotX(testX[x] - midX, testY[y] - midY, cosA, sinA);
+                int newY = rotY(testX[x] - midX, testY[y] - midY, cosA, sinA);
+
+                newX += midX;
+                newY += midY;
+
+                newX = std::abs(newX);
+                newY = std::abs(newY);
 
                 if (newX > newWidth) {
                     newWidth = newX;
@@ -72,18 +78,16 @@ void rotateImage(const QImage *src, QImage *dst, float a)
 
     //printf("Nowy rozmiar: %d x %d\n", newWidth, newHeight);
 
-    *dst = QImage(newWidth, newHeight, QImage::Format_RGB32);
+    *dst = QImage(newWidth + 100, newHeight + 100, QImage::Format_RGB32);
     dst->fill(0);
 
 
     for (int y = 0; y < src->height(); y++) {
         QRgb* rgb_src = (QRgb*)src->scanLine(y);
         for (int x = 0; x < src->width(); x++) {
-            int tx = x - midX;
-            int ty = y - midY;
 
-            int newX = rotX(tx, ty, cosA, sinA);
-            int newY = rotY(tx, ty, cosA, sinA);
+            int newX = rotX(x - midX, y - midY, cosA, sinA);
+            int newY = rotY(x - midX, y - midY, cosA, sinA);
 
             newX += midX;
             newY += midY;
