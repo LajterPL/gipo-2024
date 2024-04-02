@@ -144,6 +144,22 @@
         </widget>
        </item>
        <item>
+        <widget class="QDoubleSpinBox" name="scale_box">
+         <property name="minimum">
+          <double>0.050000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -190,7 +206,7 @@
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>19</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

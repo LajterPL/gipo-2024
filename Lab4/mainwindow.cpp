@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     moveX = 0;
     moveY = 0;
     rotation = 0;
+    scale = 0.0f;
 
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openImage()));
     connect(ui->reset_button, SIGNAL(pressed()), this, SLOT(resetImage()));
@@ -21,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->y_move_box, SIGNAL(valueChanged(int)), this, SLOT(moveImage()));
 
     connect(ui->rotation_slider, SIGNAL(sliderReleased()), this, SLOT(rotateImage()));
+
+    connect(ui->scale_box, SIGNAL(valueChanged(double)), this, SLOT(scaleImage()));
 }
 
 MainWindow::~MainWindow()
@@ -61,6 +64,14 @@ void MainWindow::rotateImage()
     ui->img_label->setPixmap(QPixmap::fromImage(trans_img));
 }
 
+void MainWindow::scaleImage()
+{
+    this->setScale(ui->scale_box->value());
+
+    IMAGEPROCESSING_H::scaleImage(&ref_img, &trans_img, scale);
+    ui->img_label->setPixmap(QPixmap::fromImage(trans_img));
+}
+
 // Setters
 
 void MainWindow::setMoveX(int newMoveX)
@@ -76,4 +87,9 @@ void MainWindow::setMoveY(int newMoveY)
 void MainWindow::setRotation(int newRotation)
 {
     rotation = newRotation;
+}
+
+void MainWindow::setScale(float newScale)
+{
+    scale = newScale;
 }

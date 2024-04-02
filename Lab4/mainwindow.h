@@ -21,6 +21,8 @@ public:
 
     void setRotation(int newRotation);
 
+    void setScale(float newScale);
+
 private:
     Ui::MainWindow *ui;
 
@@ -32,11 +34,14 @@ private:
 
     int rotation;
 
+    float scale;
+
 public slots:
     void openImage();
     void resetImage();
 
     void moveImage();
     void rotateImage();
+    void scaleImage();
 };
 #endif // MAINWINDOW_H
