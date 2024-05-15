@@ -5,11 +5,11 @@
 
 class Frame {
 
+public:
     glm::vec3 pos;
     glm::vec3 up;
     glm::vec3 forward;
 
-public:
     glm::mat4 matrix();
 };
 
