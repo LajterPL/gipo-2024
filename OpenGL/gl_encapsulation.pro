@@ -7,7 +7,6 @@ equals(QT_MAJOR_VERSION, 6) {
 }
 
 SOURCES += \
-    frame.cpp \
     geometry.cpp \
     main.cpp \
     glwidget.cpp \
@@ -15,6 +14,7 @@ SOURCES += \
     primitives.cpp
 
 HEADERS += \
+    camera.h \
     frame.h \
     geometry.h \
     glwidget.h \

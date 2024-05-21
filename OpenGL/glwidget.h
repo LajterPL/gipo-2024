@@ -18,6 +18,7 @@
 
 #include "mathgl.h"
 #include "frame.h"
+#include "camera.h"
 
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
@@ -25,16 +26,21 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     QMap<QString, GLSLProgram*> programs;
     QMap<QString, Geometry*> geometries;
 
-    Frame camera;
+    Camera camera;
 
-    glm::mat4 MVMat;
-    glm::mat4 PMat;
+    glm::mat4 ModelMat;
+    glm::mat4 ProjMat;
 
     QTimer timer;
 
     QSet<Qt::Key> key_pressed;
     int screen_width;
     int screen_height;
+
+    int cursor_x;
+    int cursor_y;
+
+    QMap<QString, Frame*> objects;
 
 protected:
     void initializeGL();
@@ -44,6 +50,7 @@ protected:
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
+    void leaveEvent(QMouseEvent *e);
     void process_keys();
 public:
     GLWidget();
