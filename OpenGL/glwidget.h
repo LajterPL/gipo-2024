@@ -16,15 +16,17 @@
 #include <QKeyEvent>
 #include <QMouseEvent>
 
-#include "mathgl.h"
 #include "frame.h"
 #include "camera.h"
+#include "texture2d.h"
 
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
 {
     QMap<QString, GLSLProgram*> programs;
     QMap<QString, Geometry*> geometries;
+    QMap<QString, Frame*> objects;
+    QMap<QString, Texture2D*> textures;
 
     Camera camera;
 
@@ -40,12 +42,13 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     int cursor_x;
     int cursor_y;
 
-    QMap<QString, Frame*> objects;
-
 protected:
     void initializeGL();
     void paintGL();
     void resizeGL(int w, int h);
+
+    void createShaders(QString shader_folder_path);
+    void createTextures();
 
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);

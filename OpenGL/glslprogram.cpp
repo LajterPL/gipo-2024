@@ -49,6 +49,14 @@ void GLSLProgram::use()
     PRINT_GL_ERRORS("GLSLProgram::use(): ");
 }
 
+void GLSLProgram::setUniform(const char* name, int i)
+{
+    GLint loc = glGetUniformLocation(handle, name);
+    if(loc != -1)
+        glUniform1i(loc, i);
+    // else PRINT SOME ERROR
+}
+
 void GLSLProgram::setUniform(const char* name, glm::vec3 v)
 {
     GLint loc = glGetUniformLocation(handle, name);

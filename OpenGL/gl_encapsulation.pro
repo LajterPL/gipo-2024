@@ -11,7 +11,8 @@ SOURCES += \
     main.cpp \
     glwidget.cpp \
     glslprogram.cpp \
-    primitives.cpp
+    primitives.cpp \
+    texture2d.cpp
 
 HEADERS += \
     camera.h \
@@ -20,6 +21,7 @@ HEADERS += \
     glwidget.h \
     glslprogram.h \
     primitives.h \
+    texture2d.h \
     utils.h
 
 unix {
@@ -32,4 +34,6 @@ win32 {
 
 DISTFILES += \
     shaders/shader.frag \
-    shaders/shader.vert
+    shaders/shader.vert \
+    shaders/uv_plane.frag \
+    shaders/uv_plane.vert

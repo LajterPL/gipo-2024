@@ -2,7 +2,6 @@
 #include <QFile>
 #include <QTextStream>
 
-
 GLWidget::GLWidget() { }
 
 
@@ -10,14 +9,8 @@ void GLWidget::initializeGL()
 {
     initializeOpenGLFunctions();
 
-    // program shadera
-    programs["basic_shader"] = new GLSLProgram();
-    programs["basic_shader"]->compileShaderFromFile("C:/Users/white/Downloads/gl_encapsulation_template_partial/gl_encapsulation_template/shaders/shader.vert", GL_VERTEX_SHADER);
-    programs["basic_shader"]->compileShaderFromFile("C:/Users/white/Downloads/gl_encapsulation_template_partial/gl_encapsulation_template/shaders/shader.frag", GL_FRAGMENT_SHADER);
-    programs["basic_shader"]->link();
-    //....
-
-    qDebug() << "Shader loaded...";
+    createShaders(QString("/home/student/Pobrane/OpenGL/shaders/"));
+    createTextures();
 
     // jakas geometria
     geometries["axes"] = new Geometry();
@@ -45,10 +38,13 @@ void GLWidget::initializeGL()
                                { plane_size,  plane_size, 0.0f},
                                { plane_size, -plane_size, 0.0f},
                                {-plane_size, -plane_size, 0.0f}};
+
     glm::vec3 plane_colors[] = {{1,0,1}, {0,1,1}, {1,1,0}, {1,0,0} };
     uint plane_idxs[] = {0,3,1,    1,3,2};
+    glm::vec2 plane_uv_coords[] = {{0, 1}, {1, 1}, {1, 0}, {0, 0}};
     geometries["plane"]->setVertices(0, plane_verts, 4);
     geometries["plane"]->setAttribute(1, plane_colors, 4);
+    geometries["plane"]->setAttribute(7, plane_uv_coords, 4);
     geometries["plane"]->setIndices(plane_idxs, 6);
 
     objects["plane"] = new Frame();
@@ -58,63 +54,66 @@ void GLWidget::initializeGL()
 
     qDebug() << "Plane created...";
 
-    int terrain_size = 2;
-    float vert_spacing = 1.0f;
+//    int terrain_size = 5;
 
-    geometries["terrain"] = new Geometry();
-    geometries["terrain"]->primitiveMode = GL_TRIANGLES;
+//    float vert_spacing = 1.0f;
 
-    int terrain_vert_num = terrain_size * terrain_size;
+//    geometries["terrain"] = new Geometry();
+//    geometries["terrain"]->primitiveMode = GL_TRIANGLES;
 
-    glm::vec3* terrain_verts = new glm::vec3(terrain_vert_num);
-    glm::vec3* terrain_colors = new glm::vec3(terrain_vert_num);
+//    int terrain_vert_num = terrain_size * terrain_size;
 
-    int terrain_idxs_num = (terrain_size - 1) * 2 * (terrain_size - 1) * 3;
+//    glm::vec3* terrain_verts = new glm::vec3(terrain_vert_num);
+//    glm::vec3* terrain_colors = new glm::vec3(terrain_vert_num);
 
-    uint* terrain_idxs = new uint(terrain_idxs_num);
+//    int terrain_idxs_num = (terrain_size - 1) * 2 * (terrain_size - 1) * 3;
 
-     for (int y = 0; y < terrain_size; y++) {
-         for (int x = 0; x < terrain_size; x++) {
+//    uint* terrain_idxs = new uint(terrain_idxs_num);
 
-             float height = 2.0f;
+//     for (int y = 0; y < terrain_size; y++) {
+//         for (int x = 0; x < terrain_size; x++) {
 
-             terrain_verts[y*terrain_size + x] = glm::vec3(x*vert_spacing, height, y*vert_spacing);
-             terrain_colors[y*terrain_size + x] = glm::vec3(0.0f, 0.0f, 1.0f - height/2.0f);
+//             float height = 2.0f;
 
-             // if (x < terrain_size - 1 && y < terrain_size -1) {
+//             terrain_verts[y*terrain_size + x] = glm::vec3(x*vert_spacing, height, y*vert_spacing);
+//             terrain_colors[y*terrain_size + x] = glm::vec3(0.0f, 0.0f, 1.0f - height/2.0f);
 
-             //    terrain_idxs[last_index] = (y*terrain_size) + x;
-             //    terrain_idxs[last_index+1] = ((y+1)*terrain_size) + x;
-             //    terrain_idxs[last_index+2] = (y*terrain_size) + (x+1);
-             //    last_index += 3;
+////              if (x < terrain_size - 1 && y < terrain_size -1) {
 
-             //    terrain_idxs[last_index] = (y*terrain_size) + (x+1);
-             //    terrain_idxs[last_index+1] = ((y+1)*terrain_size) + (x+1);
-             //    terrain_idxs[last_index+2] = ((y+1)*terrain_size) + x;
-             //    last_index += 3;
-             // }
-         }
-    }
+////                 terrain_idxs[last_index] = (y*terrain_size) + x;
+////                 terrain_idxs[last_index+1] = ((y+1)*terrain_size) + x;
+////                 terrain_idxs[last_index+2] = (y*terrain_size) + (x+1);
+////                 last_index += 3;
 
-    int last_index = 0;
+////                 terrain_idxs[last_index] = (y*terrain_size) + (x+1);
+////                 terrain_idxs[last_index+1] = ((y+1)*terrain_size) + (x+1);
+////                 terrain_idxs[last_index+2] = ((y+1)*terrain_size) + x;
+////                 last_index += 3;
+////              }
+//         }
+//    }
 
-     for(unsigned int y = 0; y < terrain_size-1; y++)       // for each row a.k.a. each strip
-     {
-         for(unsigned int x = 0; x < terrain_size; x++)      // for each column
-         {
-             for(unsigned int side = 0; side < 2; side++)      // for each side of the strip
-             {
-                 terrain_idxs[last_index] = (x + terrain_size * (y + side));
-                 last_index++;
-             }
-         }
-     }
+//    int last_index = 0;
 
-    geometries["terrain"]->setVertices(0, terrain_verts, terrain_vert_num);
-    geometries["terrain"]->setAttribute(1, terrain_colors, terrain_vert_num);
-    geometries["terrain"]->setIndices(terrain_idxs, terrain_idxs_num);
+//     for(unsigned int y = 0; y < terrain_size-1; y++)       // for each row a.k.a. each strip
+//     {
+//         for(unsigned int x = 0; x < terrain_size; x++)      // for each column
+//         {
+//             for(unsigned int side = 0; side < 2; side++)      // for each side of the strip
+//             {
+//                 terrain_idxs[last_index] = (x + terrain_size * (y + side));
+//                 last_index++;
+//             }
+//         }
+//     }
 
-    qDebug() << "Terrain created...";
+//    geometries["terrain"]->setVertices(0, terrain_verts, terrain_vert_num);
+//    geometries["terrain"]->setAttribute(1, terrain_colors, terrain_vert_num);
+//    geometries["terrain"]->setIndices(terrain_idxs, terrain_idxs_num);
+
+//    qDebug() << "Terrain created...";
+
+
 
     ModelMat = glm::mat4(1.0);
 
@@ -134,10 +133,10 @@ void GLWidget::initializeGL()
 
 void GLWidget::process_keys() {
     if (key_pressed.contains(Qt::Key_W)) {
-        camera.pos = camera.pos + camera.forward * 1.0f;
+        camera.pos = camera.pos + camera.forward * 0.2f;
     }
     if (key_pressed.contains(Qt::Key_S)) {
-        camera.pos = camera.pos - camera.forward * 1.0f;
+        camera.pos = camera.pos - camera.forward * 0.2f;
     }
     if (key_pressed.contains(Qt::Key_A)) {
         camera.pos = camera.pos - camera.s();
@@ -156,6 +155,29 @@ void GLWidget::resizeGL(int w, int h)
 
     screen_width = w;
     screen_height = h;
+}
+
+void GLWidget::createShaders(QString shader_folder_path)
+{
+    programs["basic_shader"] = new GLSLProgram();
+    programs["basic_shader"]->compileShaderFromFile(qPrintable(shader_folder_path + QString("shader.vert")), GL_VERTEX_SHADER);
+    programs["basic_shader"]->compileShaderFromFile(qPrintable(shader_folder_path + QString("shader.frag")), GL_FRAGMENT_SHADER);
+    programs["basic_shader"]->link();
+
+    programs["base_tex"] = new GLSLProgram();
+    programs["base_tex"]->compileShaderFromFile(qPrintable(shader_folder_path + QString("uv_plane.vert")), GL_VERTEX_SHADER);
+    programs["base_tex"]->compileShaderFromFile(qPrintable(shader_folder_path + QString("uv_plane.frag")), GL_FRAGMENT_SHADER);
+    programs["base_tex"]->link();
+
+    qDebug() << "Shader loaded...";
+}
+
+void GLWidget::createTextures()
+{
+    textures["base_tex"] = new Texture2D();
+    if (!textures["base_tex"]->loadFromFile("/home/student/Pobrane/OpenGL/textures/grass_2k.jpg")) {
+        qDebug() << "Nie udalo sie wczytac tekstury";
+    }
 }
 
 void GLWidget::keyPressEvent(QKeyEvent *e)
@@ -211,18 +233,24 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    programs["basic_shader"]->use();
-    programs["basic_shader"]->setUniform("ModelMat", ModelMat);
-    programs["basic_shader"]->setUniform("ProjMat", glm::translate(ProjMat, -camera.pos));
+    //programs["basic_shader"]->use();
+    //programs["basic_shader"]->setUniform("ModelMat", ModelMat);
+    //programs["basic_shader"]->setUniform("ProjMat", glm::translate(ProjMat, -camera.pos));
 
-    geometries["axes"]->render();
+    //geometries["axes"]->render();
+    //geometries["terrain"]->render();
 
-    programs["basic_shader"]->setUniform("ModelMat", objects["plane"]->matrix());
+    textures["base_tex"]->bind(0);
+
+    programs["base_tex"]->use();
+    programs["base_tex"]->setUniform("ModelMat", objects["plane"]->matrix());
+    programs["base_tex"]->setUniform("ProjMat", glm::translate(ProjMat, -camera.pos));
+    programs["base_tex"]->setUniform("tex1", 0);
 
     geometries["plane"]->render();
 
-    objects["plane"]->forward = glm::normalize(glm::vec3(glm::rotate(glm::mat4(1.0f), qDegreesToRadians(5.0f), objects["plane"]->up) * glm::vec4(objects["plane"]->forward, 1.0f)));
-    objects["plane"]->pos = glm::vec3(glm::rotate(glm::mat4(1.0f), qDegreesToRadians(1.0f), objects["plane"]->up) * glm::vec4(objects["plane"]->pos, 1.0f));
+    //objects["plane"]->forward = glm::normalize(glm::vec3(glm::rotate(glm::mat4(1.0f), qDegreesToRadians(5.0f), objects["plane"]->up) * glm::vec4(objects["plane"]->forward, 1.0f)));
+    //objects["plane"]->pos = glm::vec3(glm::rotate(glm::mat4(1.0f), qDegreesToRadians(1.0f), objects["plane"]->up) * glm::vec4(objects["plane"]->pos, 1.0f));
 
     PRINT_GL_ERRORS("Widget::paintGL(): ");
 }
