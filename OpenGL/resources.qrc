@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/shaders">
+        <file>shaders/shader.frag</file>
+        <file>shaders/shader.vert</file>
+        <file>shaders/uv_plane.frag</file>
+        <file>shaders/uv_plane.vert</file>
+    </qresource>
+    <qresource prefix="/textures">
+        <file>textures/grass_2k.jpg</file>
+        <file>textures/metal2.jpg</file>
+        <file>textures/clouds1.png</file>
+    </qresource>
+</RCC>

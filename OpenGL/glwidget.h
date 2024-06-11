@@ -49,6 +49,7 @@ protected:
 
     void createShaders(QString shader_folder_path);
     void createTextures();
+    void createGeometry();
 
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);

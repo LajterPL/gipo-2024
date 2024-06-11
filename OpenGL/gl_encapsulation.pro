@@ -36,4 +36,8 @@ DISTFILES += \
     shaders/shader.frag \
     shaders/shader.vert \
     shaders/uv_plane.frag \
-    shaders/uv_plane.vert
+    shaders/uv_plane.vert \
+    textures/grass_2k.jpg
+
+RESOURCES += \
+    resources.qrc

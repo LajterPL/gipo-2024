@@ -31,6 +31,21 @@ void Geometry::render()
     PRINT_GL_ERRORS("Geometry::render(): ");
 }
 
+void Geometry::renderStrip(uint strip_num, uint verts_in_strip) {
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+    for (uint strip = 0; strip < strip_num; strip++) {
+
+        glDrawElements(GL_TRIANGLE_STRIP,   // primitive type
+                       verts_in_strip, // number of indices to render
+                       GL_UNSIGNED_INT,     // index data type
+                       (void*)(sizeof(unsigned int)
+                                 * verts_in_strip
+                                 * strip)); // offset to starting index
+    }
+}
+
 void Geometry::setIndices(uint *data, int n)
 {
     n_indices = n;

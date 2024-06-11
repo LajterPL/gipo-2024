@@ -31,6 +31,7 @@ public:
     virtual ~Geometry() {}
 
     virtual void render();
+    virtual void renderStrip(uint strip_num, uint verts_in_strip);
 
     void setIndices(uint* data, int n);
 

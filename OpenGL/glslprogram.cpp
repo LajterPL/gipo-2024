@@ -7,6 +7,8 @@ GLSLProgram::GLSLProgram()
 {
     initializeOpenGLFunctions();
     handle = glCreateProgram();
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 }
 
 bool GLSLProgram::compileShaderFromFile(const char *filename, GLenum type)
