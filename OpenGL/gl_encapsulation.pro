@@ -33,11 +33,14 @@ win32 {
 }
 
 DISTFILES += \
+    shaders/ads_frag.frag \
+    shaders/ads_frag.vert \
     shaders/shader.frag \
     shaders/shader.vert \
     shaders/uv_plane.frag \
     shaders/uv_plane.vert \
-    textures/grass_2k.jpg
+    textures/grass_2k.jpg \
+    textures/metal2.jpg
 
 RESOURCES += \
     resources.qrc

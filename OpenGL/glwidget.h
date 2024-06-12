@@ -31,7 +31,10 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core
     Camera camera;
 
     glm::mat4 ModelMat;
+    glm::mat4 ViewMat;
     glm::mat4 ProjMat;
+
+    glm::vec4 SunPos;
 
     QTimer timer;
 

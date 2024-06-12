@@ -4,10 +4,13 @@
         <file>shaders/shader.vert</file>
         <file>shaders/uv_plane.frag</file>
         <file>shaders/uv_plane.vert</file>
+        <file>shaders/ads_frag.frag</file>
+        <file>shaders/ads_frag.vert</file>
     </qresource>
     <qresource prefix="/textures">
         <file>textures/grass_2k.jpg</file>
         <file>textures/metal2.jpg</file>
         <file>textures/clouds1.png</file>
+        <file>textures/moss.jpg</file>
     </qresource>
 </RCC>

@@ -67,6 +67,14 @@ void GLSLProgram::setUniform(const char* name, glm::vec3 v)
     // else PRINT SOME ERROR
 }
 
+void GLSLProgram::setUniform(const char* name, glm::vec4 v)
+{
+    GLint loc = glGetUniformLocation(handle, name);
+    if(loc != -1)
+        glUniform4fv(loc, 1, &v.x);
+    // else PRINT SOME ERROR
+}
+
 void GLSLProgram::setUniform(const char *name, glm::mat4 mat)
 {
     GLint loc = glGetUniformLocation(handle, name);
